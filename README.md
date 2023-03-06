@@ -1,5 +1,7 @@
-# sc-temporal-smoothing
-sparse coding with temporal smoothing
+# Temporally smooth sparse coding
+
+
+![Alt Text](https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/out.gif)
 
 Architecture based on Rozell's '08 paper on a locally competitive algorithm (LCA) for Sparse Approximation: 
 https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.64.7897&rep=rep1&type=pdf
