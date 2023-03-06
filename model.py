@@ -1,6 +1,5 @@
 '''
 Temporally Smooth Sparse Coding of Grayscale Movies
-
 '''
 
 import cv2 as cv
