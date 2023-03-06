@@ -1,5 +1,5 @@
-# sc-temporal-smoothing
-sparse coding with temporal smoothing
+# Temporally smooth sparse coding
+
 
 ![Alt Text](https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/out.gif)
 
