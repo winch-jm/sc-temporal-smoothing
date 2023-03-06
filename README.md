@@ -1,6 +1,7 @@
 # Temporally smooth sparse coding
 
 
+<img src="https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/original.png" width=32% height=32% title="Original Frame"></img>
 ![Alt Text](https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/out.gif)
 
 Architecture based on Rozell's '08 paper on a locally competitive algorithm (LCA) for Sparse Approximation: 
@@ -12,6 +13,7 @@ Abstract
 ---------
 We consider the relationship between representations of natural images in a temporally smooth sequence 
 (i.e.consecutive frames in a video). Traditionally, sparse coding methods learn representations of images in isolation. 
-Here, we learn an image’s sparse representation with the previous image’srepresentation as a starting point.
+Here, we learn an image’s sparse representation with the previous image’s representation as a starting point.
+
 
 Collaborators: Jeff Winchell, Dr. Edward Kim (Drexel University)
