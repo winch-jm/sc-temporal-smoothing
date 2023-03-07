@@ -15,5 +15,11 @@ We consider the relationship between representations of natural images in a temp
 (i.e.consecutive frames in a video). Traditionally, sparse coding methods learn representations of images in isolation. 
 Here, we learn an image’s sparse representation with the previous image’s representation as a starting point.
 
+**To-Do**
+---------
+- [ ] Different sized dictionary elements
+- [ ] Support for RGB images
+- [ ] Support for Convolutional Sparse Coding
+- [ ] Implement same technique in other ML architectures
 
 Collaborators: Jeff Winchell, Dr. Edward Kim (Drexel University)
