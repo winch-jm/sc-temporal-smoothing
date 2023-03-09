@@ -1,7 +1,7 @@
 # Temporally smooth sparse coding
 
 
-<img src="https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/original.png" width=40% height=40% title="Original Frame"></img>
+<img src="https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/original.png" width=50% height=50% title="Original Frame"></img>
 ![Alt Text](https://github.com/winch-jm/sc-temporal-smoothing/blob/master/reconstructions/small_patch.gif)
 
 Architecture based on Rozell's '08 paper on a locally competitive algorithm (LCA) for Sparse Approximation: 
