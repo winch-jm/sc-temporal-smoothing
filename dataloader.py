@@ -27,7 +27,7 @@ def get_avi_frames(filename):
 class PatchGenerator():
     frames = None
     patches = None
-    patch_size = (16,20)
+    patch_size = (4,4)
     overlap = 0
 
     def __init__(self,video_file,patch_size,overlap):
@@ -57,15 +57,15 @@ class PatchGenerator():
         patches = (patches-np.min(patches))/(np.max(patches)-np.min(patches))
         self.patches = patches
         # print(self.patches.max())
-        # fig,ax = plt.subplots(nrows=9,ncols=9,figsize=(10,10))
-        # frame_patches = patches[78]
-        # print(len(frame_patches)-1)
+        # fig,ax = plt.subplots(nrows=36,ncols=45,figsize=(10,10))
+        frame_patches = patches[78]
+        # print(len(frame_patches))
         # for i in range(len(frame_patches)):
-        #     ax[i%9,i//9].imshow(frame_patches[i].reshape(16,20),cmap='gray')
-        #     ax[i%9,i//9].axis('off')
+        #     ax[i//45,i%45].imshow(frame_patches[i].reshape(4,4),cmap='gray')
+        #     ax[i//45,i%45].axis('off')
         # plt.tight_layout()
         # plt.show()
-datagen = PatchGenerator(video_file='moshe_walk.avi',patch_size=(16,20),overlap=0)
+# datagen = PatchGenerator(video_file='moshe_walk.avi',patch_size=(4,4),overlap=0)
 
 
 

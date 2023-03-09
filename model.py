@@ -15,22 +15,21 @@ class SparseCoding():
     samples = 80
 
     # MODEL PARAMS
-    dict_size = 500
-    input_pixels = 320
-    activation_threshold = 0.95
+    dict_size = 1000
+    input_pixels = 80
+    activation_threshold = 0.7
     lambdav = 0.7
-    batch_size = 81
+    batch_size = 32
     lrn_rate = 0.01
     num_trials = 1
     eta = 16e-4
 
     # INFERENCE PARAMS
-    tau = 20
-    inference_steps = 400
+    tau = 100
+    inference_steps = 10
 
     def __init__(self,patches):
         self.patches = patches
-        pass
 
     
     def threshold_activations(self,u,alpha=0.9,gamma=100):
@@ -51,11 +50,10 @@ class SparseCoding():
         b = phi.T @ batch_samples
         gramian = phi.T @ phi - np.identity(int(phi.shape[1]))
         u = u_prev
-        # for step in range(self.inference_steps):
-        a = self.threshold_activations(u)
-        du = b - u - gramian @ a
-        # (144,81) - 
-        u += (1.0 / self.tau) * du
+        for step in range(self.inference_steps):
+            a = self.threshold_activations(u)
+            du = b - u - gramian @ a
+            u += (1.0 / self.tau) * du
         return u, self.threshold_activations(u)
 
     def update_weights(self, dictionary, batch_samples, activities,lrn_rate):
@@ -146,9 +144,9 @@ class SparseCoding():
                 #     plt.pause(0.05)
                 #     plt.pause(0.001)
                 # print(reconstruction_err)
-                # with open('./dictionaries/dict_at_t%s.npy'%str(image_num).zfill(3),'wb') as f:
+                with open('./dictionaries/dict_at_t%s.npy'%str(image_num).zfill(3),'wb') as f:
                     
-                    # np.save(f,dictionary,allow_pickle=True)
+                    np.save(f,dictionary,allow_pickle=True)
                 reconstruction_accs.append(1-np.mean(abs(reconstruction_err)))
             # coder = SparseCoder(dictionary.T)
             # codes = coder.transform(img_patches)
@@ -158,9 +156,10 @@ class SparseCoding():
         # print(reconstruction_accs,)
         return hf.l2Norm(dictionary), final_activities,np.array(sparsity_measures),np.array(reconstruction_accs), img_patches
 
-datagen = PatchGenerator('eli_walk.avi',patch_size=(16,20),overlap=0)
-datagen2 = PatchGenerator('moshe_walk.avi',patch_size=(16,20),overlap=0)
-patches = np.concatenate([datagen.patches,datagen2.patches],axis=0)
+datagen = PatchGenerator('eli_walk.avi',patch_size=(8,10),overlap=0)
+datagen1 = PatchGenerator('daria_walk.avi',patch_size=(8,10),overlap=0)
+datagen2 = PatchGenerator('moshe_walk.avi',patch_size=(8,10),overlap=0)
+patches = np.concatenate([datagen.patches,datagen1.patches,datagen2.patches],axis=0)
 sparse_coder = SparseCoding(patches)
 dictionary, activities, sparse, recon, img_patches= sparse_coder.train(temp_smooth=True)
 # recon_patches = np.zeros((81,320))
@@ -186,30 +185,30 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 # plt.figure()
-reshaped_patches =np.zeros((81,16,20))
-for i in range(81):
-    reshaped_patches[i] = recon_patches[i].reshape(16,20)
-reshaped_patches = reshaped_patches.reshape((9,9,16,20),order='F')
+reshaped_patches =np.zeros((324,8,10))
+for i in range(324):
+    reshaped_patches[i] = recon_patches[i].reshape(8,10)
+reshaped_patches = reshaped_patches.reshape((18,18,8,10),order='F')
 new_img = np.zeros((144,180))
-for i in range(9):
+for i in range(18):
     row = np.hstack([*reshaped_patches[i]])
-    new_img[i*16:(i+1)*16] = row
+    new_img[i*8:(i+1)*8] = row
 # new_img = np.vstack(new_img)
 # new_img = np.hstack(new_img)
 # fig,ax = plt.subplots(nrows=9,ncols=9,figsize=(6,5))
 
-reshaped_patches =np.zeros((81,16,20))
-for i in range(81):
-    reshaped_patches[i] = datagen.patches[30,i].reshape(16,20)
-reshaped_patches = reshaped_patches.reshape((9,9,16,20),order='F')
+reshaped_patches =np.zeros((324,8,10))
+for i in range(324):
+    reshaped_patches[i] = datagen.patches[30,i].reshape(8,10)
+reshaped_patches = reshaped_patches.reshape((18,18,8,10),order='F')
 original_img = np.zeros((144,180))
-for i in range(9):
+for i in range(18):
     row = np.hstack([*reshaped_patches[i]])
-    original_img[i*16:(i+1)*16] = row
-# for i in range(81):
-#     # print(np.max(datagen2.patches[78]))
-#     ax[i%9,i//9].imshow(datagen2.patches[78,i].reshape(16,20),cmap='gray')
-#     ax[i%9,i//9].axis('off')
+    original_img[i*8:(i+1)*8] = row
+# # for i in range(81):
+# #     # print(np.max(datagen2.patches[78]))
+# #     ax[i%9,i//9].imshow(datagen2.patches[78,i].reshape(16,20),cmap='gray')
+# #     ax[i%9,i//9].axis('off')
 fig,ax = plt.subplots(nrows=1,ncols=2,figsize=(10,4))
 
 ax[0].imshow(original_img,cmap='gray')
@@ -218,13 +217,13 @@ ax[0].axis('off')
 ax[1].axis('off')
 plt.tight_layout()
 plt.show()
-# # fig,ax = plt.subplots(nrows=9,ncols=9,figsize=(6,5))
-# fig,ax = plt.subplots(ncols=20,nrows=10,figsize=(12,5))
-# for i in range(200):
-#     ax[i//20,i%20].imshow(dictionary[:,i].reshape(16,20),cmap='gray')
-#     ax[i//20,i%20].axis('off')
-# plt.tight_layout()
-# plt.show()
-plt.figure()
-plt.bar(np.arange(len(codes[0])),sorted(codes[0])[::-1])
+# fig,ax = plt.subplots(nrows=9,ncols=9,figsize=(6,5))
+fig,ax = plt.subplots(ncols=20,nrows=10,figsize=(12,5))
+for i in range(200):
+    ax[i//20,i%20].imshow(dictionary[:,i].reshape(8,10),cmap='gray')
+    ax[i//20,i%20].axis('off')
+plt.tight_layout()
 plt.show()
+# plt.figure()
+# plt.bar(np.arange(len(codes[0])),sorted(codes[0])[::-1])
+# plt.show()
